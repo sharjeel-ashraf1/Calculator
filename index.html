@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <title>Calculator</title>
+    <style>
+    body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: wheat;
+            height: 100vh;
+        }
+        .calculator {
+            background-color: gray;
+            border-radius: 15px;
+            padding: 20px;
+            width: 330px;
+        }
+        .display {
+            background-color: black;
+            color: white;
+            font-size: 48px;
+            text-align: right;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+         .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        button {
+            padding: 25px;
+            font-size: 24px;
+            border: none;
+            border-radius: 50%;
+            color: black;
+            font-weight: bold;
+        }
+        .number {
+            background-color: lightgray;
+        }
+        .operator {
+            background-color: orange;
+        }
+        .operator1 {
+            background-color: lightgray;
+        }
+        .clear {
+            background-color: lightgray;
+        }
+
+        .equals {
+            background-color: orange;
+        }
+        .decimal {
+            background-color: lightgrey;
+        }
+    </style>
+</head>
+<body>
+<div class="calculator">
+    <div class="display">0</div>
+    <div class="buttons">
+        <button class="clear"onclick="pressBack()"><-</button>
+        <button class="clear"onclick="pressClear()">AC</button>   
+        <button class="operator1"onclick="pressOperator('%')">%</button>
+        <button class="operator"onclick="pressOperator('/')">/</button>
+        <button class="number" onclick="pressNumber('7')">7</button>
+        <button class="number"onclick="pressNumber('8')">8</button>
+        <button class="number"onclick="pressNumber('9')">9</button>
+        <button class="operator"onclick="pressOperator('*')">*</button>
+        <button class="number"onclick="pressNumber('4')">4</button>
+        <button class="number"onclick="pressNumber('5')">5</button>
+        <button class="number"onclick="pressNumber('6')">6</button>
+        <button class="operator" onclick="pressOperator('-')">-</button>
+        <button class="number"onclick="pressNumber('1')">1</button>
+        <button class="number"onclick="pressNumber('2')">2</button>
+        <button class="number"onclick="pressNumber('3')">3</button>
+        <button class="operator" onclick="pressOperator('+')">+</button>
+        <button class="number"onclick="pressNumber('0')">0</button>
+        <button class="decimal"onclick="pressDecimal()">.</button>
+        <button class="equals"onclick="pressEquals('=')">=</button>
+        
+    </div>
+</div>
+
+<script>
+let display= document.querySelector('.display');
+let firstNumber = '';
+let operator = '';
+let secondNumber = '';
+let freshStart = false;
+
+function pressNumber(num) {
+    if (freshStart) {
+        display.textContent = num;
+        freshStart = false;
+    } else {
+        if (display.textContent === '0') {
+            display.textContent = num;
+        } else {
+            display.textContent += num;
+        }
+    }
+}
+function pressOperator(op) {
+    firstNumber = display.textContent;
+    operator = op;
+    freshStart = true; }
+
+function pressDecimal() {
+    if (!display.textContent.includes('.')) {
+        display.textContent += '.';
+    }
+}
+
+function pressClear() {
+    display.textContent = '0';
+    firstNumber = '';
+    operator = '';
+    secondNumber = '';
+}
+function pressBack() {
+    if (display.textContent.length > 1) {
+        display.textContent = display.textContent.slice(0, -1);
+    } else {
+        display.textContent = '0';
+    }
+}
+function pressEquals() {
+    secondNumber = display.textContent;
+    let result = 0;
+
+    if (operator === '+') result = parseFloat(firstNumber) + parseFloat(secondNumber);
+    if (operator === '-') result = parseFloat(firstNumber) - parseFloat(secondNumber);
+    if (operator === '*') result = parseFloat(firstNumber) * parseFloat(secondNumber);
+    if (operator === '%') result = parseFloat(firstNumber) % parseFloat(secondNumber);
+
+    if (operator === '/') {
+        if (secondNumber === '0') {
+            display.textContent = 'Error';
+            return;
+        }
+        result = parseFloat(firstNumber) / parseFloat(secondNumber);
+    }
+
+    display.textContent = parseFloat(result.toFixed(10));
+
+    freshStart = true;
+}
+</script>
+
+</body>
+
+</html>
